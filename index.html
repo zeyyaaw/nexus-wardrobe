@@ -1,0 +1,908 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ATELIER & TEXTILE — Персональный гид по стилю и тканям</title>
+    <!-- Подключаем Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Подключаем шрифты Inter и Playfair Display -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #121212;
+            color: #F5F5F0;
+        }
+        .font-serif-editorial {
+            font-family: 'Playfair Display', serif;
+        }
+        .fade-in {
+            animation: fadeIn 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(14px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .option-card {
+            transition: all 0.25s ease;
+        }
+        .option-card:hover {
+            border-color: #34D399;
+            background-color: rgba(52, 211, 153, 0.06);
+        }
+        .option-card.selected {
+            border-color: #10B981;
+            background-color: rgba(16, 185, 129, 0.14);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between selection:bg-emerald-500 selection:text-white">
+
+    <!-- Верхняя навигация и переключатель языка -->
+    <header class="w-full border-b border-white/10 bg-[#121212]/90 backdrop-blur-md sticky top-0 z-30">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
+            <button onclick="goHome()" class="flex items-center gap-2.5 text-left group cursor-pointer">
+                <div class="w-8 h-8 rounded-lg bg-emerald-500/20 border border-emerald-500/40 group-hover:bg-emerald-500/30 transition flex items-center justify-center text-emerald-400 font-serif-editorial font-semibold">
+                    A
+                </div>
+                <div>
+                    <span class="font-medium tracking-wider text-sm uppercase text-white block leading-none">Atelier Lab</span>
+                    <span class="text-[11px] text-neutral-400 tracking-wide">Style & Fabric Architecture</span>
+                </div>
+            </button>
+
+            <div class="flex items-center gap-2 sm:gap-3">
+                <nav class="hidden sm:flex items-center gap-1 text-xs mr-2">
+                    <button onclick="goHome()" id="nav-home" class="px-3 py-1.5 rounded-lg text-white bg-white/10 font-medium transition cursor-pointer">
+                        Главная
+                    </button>
+                    <button onclick="openTipsScreen()" id="nav-tips" class="px-3 py-1.5 rounded-lg text-neutral-400 hover:text-white transition cursor-pointer">
+                        Советы
+                    </button>
+                    <button onclick="startQuiz()" id="nav-quiz" class="px-3 py-1.5 rounded-lg text-neutral-400 hover:text-white transition cursor-pointer">
+                        Тест
+                    </button>
+                </nav>
+
+                <!-- Переключатель режима отображения языков -->
+                <div class="flex items-center bg-neutral-900 p-1 rounded-xl border border-white/10 text-xs">
+                    <button onclick="setLangMode('both')" id="btn-both" class="px-3 py-1.5 rounded-lg font-medium transition bg-emerald-500 text-neutral-950 cursor-pointer">
+                        EN + RU
+                    </button>
+                    <button onclick="setLangMode('en')" id="btn-en" class="px-3 py-1.5 rounded-lg font-medium text-neutral-400 hover:text-white transition cursor-pointer">
+                        EN
+                    </button>
+                    <button onclick="setLangMode('ru')" id="btn-ru" class="px-3 py-1.5 rounded-lg font-medium text-neutral-400 hover:text-white transition cursor-pointer">
+                        RU
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Основной контейнер приложения -->
+    <main class="flex-grow flex items-center justify-center px-4 py-8 sm:py-12">
+        <div class="w-full max-w-3xl">
+            
+            <!-- ЭКРАН 1: ГЛАВНЫЙ ХАБ -->
+            <section id="screen-cover" class="fade-in space-y-6">
+                <div class="bg-neutral-900/90 border border-white/10 rounded-3xl overflow-hidden shadow-2xl">
+                    <div class="relative h-52 sm:h-60 w-full overflow-hidden bg-neutral-800">
+                        <img 
+                            src="https://images.unsplash.com/photo-1558769132-cb1aea458c5e?auto=format&fit=crop&w=1200&q=80" 
+                            onerror="this.src='https://placehold.co/1200x600/1e1e1e/a3a3a3?text=Atelier+%26+Textile+Studio'"
+                            alt="Textile and fashion studio" 
+                            class="w-full h-full object-cover opacity-65 scale-105 hover:scale-100 transition duration-700"
+                        >
+                        <div class="absolute inset-0 bg-gradient-to-t from-neutral-900 via-neutral-900/50 to-transparent"></div>
+                        <div class="absolute bottom-4 left-6 right-6 flex flex-wrap items-center justify-between gap-2">
+                            <span class="px-3 py-1 rounded-full text-xs font-medium bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 backdrop-blur-sm">
+                                Style & Textile Platform
+                            </span>
+                            <span class="text-xs text-neutral-300 bg-black/40 px-3 py-1 rounded-full backdrop-blur-sm">
+                                19 Questions • Expert Guides
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="p-6 sm:p-10">
+                        <h1 class="text-2xl sm:text-3xl font-serif-editorial font-medium text-white leading-snug mb-3" data-en="Discover Your Ideal Style & Master Fabric Quality" data-ru="Откройте свой идеальный стиль и научитесь разбираться в качестве тканей">
+                            Discover Your Ideal Style & Master Fabric Quality
+                        </h1>
+                        <p class="text-sm sm:text-base text-neutral-400 leading-relaxed mb-8" data-en="Take our smart branching quiz for a personalized wardrobe formula, or explore curated tips from stylists and textile specialists." data-ru="Пройдите умный разветвленный тест для получения персональной формулы гардероба или изучите готовые советы стилистов и экспертов по тканям.">
+                            Пройдите умный разветвленный тест для получения персональной формулы гардероба или изучите готовые советы стилистов и экспертов по тканям.
+                        </p>
+
+                        <!-- Две главные кнопки выбора: Тест или Советы -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <button onclick="startQuiz()" class="p-5 rounded-2xl bg-emerald-500 hover:bg-emerald-400 text-neutral-950 text-left transition shadow-lg shadow-emerald-500/20 flex flex-col justify-between group cursor-pointer">
+                                <div class="flex items-center justify-between w-full mb-3">
+                                    <span class="px-2.5 py-1 rounded-lg bg-neutral-950/15 text-xs font-semibold">7 шагов • Персонально</span>
+                                    <svg class="w-5 h-5 transform group-hover:translate-x-1 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                                </div>
+                                <div>
+                                    <span class="block font-bold text-base sm:text-lg leading-tight">Take Style & Fabric Quiz</span>
+                                    <span class="block text-xs sm:text-sm font-medium opacity-85 mt-0.5">Пройти персональный тест</span>
+                                </div>
+                            </button>
+
+                            <button onclick="openTipsScreen()" class="p-5 rounded-2xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/15 hover:border-emerald-500/50 text-white text-left transition flex flex-col justify-between group cursor-pointer">
+                                <div class="flex items-center justify-between w-full mb-3">
+                                    <span class="px-2.5 py-1 rounded-lg bg-emerald-500/15 text-emerald-300 text-xs font-medium">База знаний</span>
+                                    <svg class="w-5 h-5 text-neutral-400 group-hover:text-emerald-400 transform group-hover:translate-x-1 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+                                </div>
+                                <div>
+                                    <span class="block font-semibold text-base sm:text-lg leading-tight">Read Expert Tips</span>
+                                    <span class="block text-xs sm:text-sm text-neutral-400 mt-0.5">Читать советы по стилю и тканям</span>
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Блок мини-советов дня -->
+                <div class="bg-neutral-900/70 border border-white/10 rounded-3xl p-6 sm:p-8">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5">
+                        <div>
+                            <h2 class="text-base sm:text-lg font-medium text-white">Quick Editorial Tips / Короткие советы</h2>
+                            <p class="text-xs text-neutral-400">Полезные шпаргалки перед выбором одежды</p>
+                        </div>
+                        <button onclick="openTipsScreen()" class="text-xs text-emerald-400 hover:text-emerald-300 font-medium self-start sm:self-auto cursor-pointer">
+                            Все советы (6) →
+                        </button>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
+                        <div onclick="openTipsScreen('fabric')" class="p-4 rounded-2xl bg-neutral-950/70 border border-white/5 hover:border-emerald-500/40 transition cursor-pointer">
+                            <span class="text-[11px] uppercase tracking-wider text-emerald-400 font-semibold block mb-1.5">01 • Ткани</span>
+                            <h3 class="text-sm font-medium text-white mb-1">Плотность (GSM)</h3>
+                            <p class="text-xs text-neutral-400 leading-relaxed">Почему футболка от 240 г/м² сидит лучше и не просвечивает.</p>
+                        </div>
+
+                        <div onclick="openTipsScreen('style')" class="p-4 rounded-2xl bg-neutral-950/70 border border-white/5 hover:border-emerald-500/40 transition cursor-pointer">
+                            <span class="text-[11px] uppercase tracking-wider text-emerald-400 font-semibold block mb-1.5">02 • Стиль</span>
+                            <h3 class="text-sm font-medium text-white mb-1">Правило 3 цветов</h3>
+                            <p class="text-xs text-neutral-400 leading-relaxed">Как собирать дорогие образы без сложных сочетаний.</p>
+                        </div>
+
+                        <div onclick="openTipsScreen('labels')" class="p-4 rounded-2xl bg-neutral-950/70 border border-white/5 hover:border-emerald-500/40 transition cursor-pointer">
+                            <span class="text-[11px] uppercase tracking-wider text-emerald-400 font-semibold block mb-1.5">03 • Бирки</span>
+                            <h3 class="text-sm font-medium text-white mb-1">Хлопок Пенье</h3>
+                            <p class="text-xs text-neutral-400 leading-relaxed">Как отличить гладкий трикотаж без катышков в магазине.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ЭКРАН 1.5: БИБЛИОТЕКА СОВЕТОВ -->
+            <section id="screen-tips" class="hidden fade-in bg-neutral-900/95 border border-white/10 rounded-3xl p-6 sm:p-10 shadow-2xl">
+                <div class="flex flex-wrap items-center justify-between gap-4 pb-6 mb-6 border-b border-white/10">
+                    <div>
+                        <span class="text-xs text-emerald-400 font-medium uppercase tracking-wider">Atelier Knowledge Base</span>
+                        <h2 class="text-2xl sm:text-3xl font-serif-editorial font-medium text-white mt-1">
+                            Style & Fabric Tips / Советы эксперта
+                        </h2>
+                    </div>
+                    <button onclick="goHome()" class="px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-xs font-medium text-neutral-300 hover:text-white transition cursor-pointer">
+                        ← На главную / Home
+                    </button>
+                </div>
+
+                <!-- Фильтры категорий советов -->
+                <div class="flex flex-wrap gap-2 mb-6">
+                    <button onclick="filterTips('all')" id="tip-filter-all" class="px-3.5 py-1.5 rounded-xl text-xs font-medium bg-emerald-500 text-neutral-950 transition cursor-pointer">
+                        Все советы / All
+                    </button>
+                    <button onclick="filterTips('fabric')" id="tip-filter-fabric" class="px-3.5 py-1.5 rounded-xl text-xs font-medium bg-white/5 text-neutral-300 hover:text-white transition cursor-pointer">
+                        Ткани и качество / Fabrics
+                    </button>
+                    <button onclick="filterTips('style')" id="tip-filter-style" class="px-3.5 py-1.5 rounded-xl text-xs font-medium bg-white/5 text-neutral-300 hover:text-white transition cursor-pointer">
+                        Стиль и капсула / Style
+                    </button>
+                    <button onclick="filterTips('labels')" id="tip-filter-labels" class="px-3.5 py-1.5 rounded-xl text-xs font-medium bg-white/5 text-neutral-300 hover:text-white transition cursor-pointer">
+                        Бирки и уход / Labels & Care
+                    </button>
+                </div>
+
+                <div id="tips-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8"></div>
+
+                <div class="p-5 sm:p-6 rounded-2xl bg-gradient-to-r from-emerald-950/60 to-neutral-950 border border-emerald-500/20 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                    <div>
+                        <h3 class="text-sm sm:text-base font-medium text-white">Хотите персональный подбор под ваш гардероб?</h3>
+                        <p class="text-xs text-neutral-400 mt-0.5">Пройдите 7 вопросов и получите индивидуальную формулу стиля и тканей.</p>
+                    </div>
+                    <button onclick="startQuiz()" class="px-6 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-neutral-950 font-semibold text-xs sm:text-sm transition whitespace-nowrap cursor-pointer">
+                        Пройти тест →
+                    </button>
+                </div>
+            </section>
+
+            <!-- ЭКРАН 2: КВИЗ (7 ШАГОВ С ВЕТВЛЕНИЕМ) -->
+            <section id="screen-quiz" class="hidden bg-neutral-900/95 border border-white/10 rounded-3xl p-6 sm:p-10 shadow-2xl max-w-2xl mx-auto">
+                <!-- Верхняя панель прогресса -->
+                <div class="mb-8">
+                    <div class="flex items-center justify-between text-xs text-neutral-400 mb-2.5">
+                        <span id="step-indicator" class="font-medium text-emerald-400">Шаг 1 из 7</span>
+                        <span id="branch-badge" class="px-2.5 py-0.5 rounded-md bg-white/5 text-neutral-300">Главный выбор / Main Focus</span>
+                    </div>
+                    <div class="w-full h-1.5 bg-neutral-800 rounded-full overflow-hidden">
+                        <div id="progress-bar" class="h-full bg-emerald-500 transition-all duration-500 rounded-full" style="width: 14%"></div>
+                    </div>
+                </div>
+
+                <!-- Контейнер вопроса -->
+                <div id="question-container" class="fade-in">
+                    <h2 id="q-title-en" class="text-xl sm:text-2xl font-medium text-white leading-snug mb-1.5"></h2>
+                    <p id="q-title-ru" class="text-sm sm:text-base text-neutral-400 mb-6"></p>
+
+                    <!-- Список вариантов ответа -->
+                    <div id="options-list" class="space-y-3 mb-8"></div>
+                </div>
+
+                <!-- Кнопки навигации Назад / Далее -->
+                <div class="flex items-center justify-between pt-4 border-t border-white/10">
+                    <button id="btn-prev" onclick="prevStep()" class="px-5 py-2.5 rounded-xl border border-white/10 hover:bg-white/5 text-sm text-neutral-300 transition flex items-center gap-2 cursor-pointer">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                        Назад
+                    </button>
+
+                    <button id="btn-next" onclick="nextStep()" disabled class="px-7 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 disabled:opacity-35 disabled:pointer-events-none text-neutral-950 font-semibold text-sm transition flex items-center gap-2 cursor-pointer">
+                        <span id="next-btn-label">Далее</span>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                    </button>
+                </div>
+            </section>
+
+            <!-- ЭКРАН 3: ПЕРСОНАЛЬНЫЙ СОВЕТ В ФИНАЛЕ -->
+            <section id="screen-result" class="hidden fade-in bg-neutral-900/95 border border-white/10 rounded-3xl overflow-hidden shadow-2xl max-w-2xl mx-auto">
+                <div class="bg-gradient-to-r from-emerald-950/80 via-neutral-900 to-neutral-900 p-6 sm:p-10 border-b border-white/10">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-500/30 text-emerald-300 text-xs font-medium mb-4">
+                        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                        <span id="result-badge">Персональная рекомендация</span>
+                    </div>
+                    <h2 id="result-title-en" class="text-2xl sm:text-3xl font-serif-editorial font-medium text-white mb-2"></h2>
+                    <p id="result-title-ru" class="text-sm sm:text-base text-emerald-300/90 font-medium"></p>
+                </div>
+
+                <div class="p-6 sm:p-10 space-y-6">
+                    <!-- Карточка совета от стилиста -->
+                    <div class="bg-white/[0.03] border border-white/10 rounded-2xl p-5 sm:p-6">
+                        <h3 class="text-xs uppercase tracking-wider text-neutral-400 font-semibold mb-3">
+                            Expert Recommendation / Совет эксперта
+                        </h3>
+                        <p id="result-advice-en" class="text-sm sm:text-base text-white leading-relaxed mb-3"></p>
+                        <p id="result-advice-ru" class="text-sm text-neutral-400 leading-relaxed border-t border-white/10 pt-3"></p>
+                    </div>
+
+                    <!-- Сводка ответов пользователя -->
+                    <div>
+                        <h4 class="text-xs uppercase tracking-wider text-neutral-400 font-semibold mb-3">
+                            Your Profile Summary / Ваши параметры
+                        </h4>
+                        <div id="result-summary-tags" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5"></div>
+                    </div>
+
+                    <!-- Кнопки перезапуска и возврата на главную -->
+                    <div class="pt-4 border-t border-white/10 flex flex-wrap justify-between items-center gap-3">
+                        <div class="flex items-center gap-2.5">
+                            <button onclick="restartQuiz()" class="px-5 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-xs font-medium text-white transition cursor-pointer">
+                                ↻ Пройти заново
+                            </button>
+                            <button onclick="goHome()" class="px-5 py-2.5 rounded-xl bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-300 border border-emerald-500/30 text-xs font-medium transition cursor-pointer">
+                                На главную / Home
+                            </button>
+                        </div>
+                        <span class="text-xs text-neutral-500">Branching Logic v2.2</span>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- Подвал -->
+    <footer class="w-full border-t border-white/5 py-5 text-center text-xs text-neutral-500">
+        <p>Interactive Wardrobe & Textile Research Project • Designed with Conditional Branching UX</p>
+    </footer>
+
+    <!-- Логика приложения -->
+    <script>
+        let langMode = 'both';
+        let currentTipFilter = 'all';
+
+        const tipsDatabase = [
+            {
+                category: 'fabric',
+                tagEn: 'Fabric Density',
+                tagRu: 'Плотность ткани',
+                titleEn: 'Why GSM Matters (240+ GSM Rule)',
+                titleRu: 'Почему важна плотность (правило 240+ г/м²)',
+                descEn: 'Lightweight T-shirts (140–160 GSM) quickly lose shape and show every crease. Heavyweight cotton (240–280 GSM) creates clean architectural lines and lasts 3x longer.',
+                descRu: 'Тонкие футболки (140–160 г/м²) быстро теряют форму и просвечивают. Плотный хлопок (240–280 г/м²) держит архитектурный силуэт и служит в 3 раза дольше.'
+            },
+            {
+                category: 'labels',
+                tagEn: 'Cotton Quality',
+                tagRu: 'Качество волокна',
+                titleEn: 'Compact Penye vs. Carded Cotton',
+                titleRu: 'Компакт Пенье против обычного хлопка',
+                descEn: 'Penye is made from the longest combed cotton fibers. Its surface is silky, matte, and resistant to pilling even after 50+ washes.',
+                descRu: 'Пенье производят из самых длинных гребенных волокон хлопка. Поверхность ткани гладкая, матовая и не скатывается даже после 50 стирок.'
+            },
+            {
+                category: 'style',
+                tagEn: 'Color Harmony',
+                tagRu: 'Цветовой баланс',
+                titleEn: 'The 70 / 20 / 10 Wardrobe Formula',
+                titleRu: 'Формула гардероба 70 / 20 / 10',
+                descEn: 'Build 70% of your closet in calm neutrals, 20% in textured layers (oversized shirts, knitwear), and 10% in deep rich accents.',
+                descRu: 'Постройте 70% гардероба на спокойных базовых тонах, 20% — на фактурном втором слое (рубашки, трикотаж) и 10% — на глубоких акцентах.'
+            },
+            {
+                category: 'style',
+                tagEn: 'Proportions',
+                tagRu: 'Пропорции',
+                titleEn: 'Playing with Volume & Structure',
+                titleRu: 'Баланс объемов и жесткости ткани',
+                descEn: 'If you wear a relaxed oversized top, pair it with structured straight-leg trousers or crisp denim to keep the silhouette intentional.',
+                descRu: 'Если вы надеваете свободный верх оверсайз, сочетайте его с прямыми брюками или плотным денимом, чтобы образ выглядел собранным.'
+            },
+            {
+                category: 'labels',
+                tagEn: 'Construction Check',
+                tagRu: 'Проверка пошива',
+                titleEn: 'The 10-Second Collar & Seam Test',
+                titleRu: 'Тест горловины и швов за 10 секунд',
+                descEn: 'Check for shoulder reinforcement tape and a dense ribbed collar with 3–5% elastane — this prevents the neckline from stretching.',
+                descRu: 'Проверьте наличие киперной ленты на плечах и плотной резинки кашкорсе с 3–5% эластана на вороте — так горловина не растянется.'
+            },
+            {
+                category: 'fabric',
+                tagEn: 'Fleece & Hoodies',
+                tagRu: 'Футер и худи',
+                titleEn: 'Loopback Terry vs. Brushed Fleece',
+                titleRu: 'Петельный футер или начес?',
+                descEn: 'Diagonal loopback French Terry breathes better and holds crisp structure year-round, while brushed fleece is best for freezing weather.',
+                descRu: 'Трехнитка-петля лучше дышит и держит четкую форму круглый год, тогда как мягкий начес идеален для сильных морозов.'
+            }
+        ];
+
+        const quizDatabase = {
+            root: {
+                id: 'Q1',
+                branchLabel: 'Главный выбор / Main Focus',
+                en: 'What would you like to improve first?',
+                ru: 'Что бы вы хотели улучшить в первую очередь?',
+                options: [
+                    {
+                        branch: 'A',
+                        en: 'I want to elevate my style and try new looks',
+                        ru: 'Я хочу обновить свой стиль и попробовать новые образы'
+                    },
+                    {
+                        branch: 'B',
+                        en: 'I want to understand fabrics, labels, and quality',
+                        ru: 'Я хочу разбираться в тканях, бирках и качестве'
+                    },
+                    {
+                        branch: 'C',
+                        en: 'I want both: a style upgrade and premium basics',
+                        ru: 'Я хочу всё сразу: апгрейд стиля и премиальную базу'
+                    }
+                ]
+            },
+            branches: {
+                A: [
+                    {
+                        id: '2A',
+                        branchLabel: 'Ветка A: Стиль / Style Path',
+                        en: 'Which vibe best describes your everyday style?',
+                        ru: 'Какой вайб лучше всего описывает ваш повседневный стиль?',
+                        options: [
+                            { en: 'Minimal & Casual comfort', ru: 'Минимализм и повседневный комфорт' },
+                            { en: 'Oversize & Streetwear aesthetic', ru: 'Оверсайз и уличная эстетика' },
+                            { en: 'Smart Elegant & clean classic', ru: 'Элегантная классика и деловой стиль' }
+                        ]
+                    },
+                    {
+                        id: '3A',
+                        branchLabel: 'Ветка A: Стиль / Style Path',
+                        en: 'Which color palette do you feel most confident in?',
+                        ru: 'В какой цветовой гамме вы чувствуете себя увереннее всего?',
+                        options: [
+                            { en: 'Monochromatic neutrals (Black, White, Graphite)', ru: 'Монохромная база (черный, белый, графит)' },
+                            { en: 'Warm earth tones (Beige, Sand, Olive)', ru: 'Теплые природные оттенки (бежевый, песочный, оливка)' },
+                            { en: 'Deep rich accents (Burgundy, Cobalt, Emerald)', ru: 'Глубокие насыщенные акценты (бордо, кобальт, изумруд)' }
+                        ]
+                    },
+                    {
+                        id: '4A',
+                        branchLabel: 'Ветка A: Стиль / Style Path',
+                        en: 'What is your biggest daily struggle when putting an outfit together?',
+                        ru: 'Какая ваша главная сложность при составлении образов каждый день?',
+                        options: [
+                            { en: '"I have nothing to wear" despite a full closet', ru: '«Нечего надеть» при полном шкафу вещей' },
+                            { en: 'Hard to mix colors and create layers', ru: 'Сложно сочетать цвета и многослойность' },
+                            { en: 'Outfits look too plain or lack structure', ru: 'Образы выглядят слишком просто и не держат форму' }
+                        ]
+                    },
+                    {
+                        id: '5A',
+                        branchLabel: 'Ветка A: Стиль / Style Path',
+                        en: 'Which clothing item would instantly upgrade your current wardrobe?',
+                        ru: 'Какая вещь мгновенно улучшила бы ваш текущий гардероб?',
+                        options: [
+                            { en: 'A structured oversized jacket or shirt', ru: 'Структурный жакет или рубашка оверсайз' },
+                            { en: 'A perfect-fitting heavyweight basic top', ru: 'Идеально сидящий плотный базовый топ / футболка' },
+                            { en: 'A statement layer (premium hoodie or longsleeve)', ru: 'Акцентный верхний слой (худи или лонгслив)' }
+                        ]
+                    },
+                    {
+                        id: '6A',
+                        branchLabel: 'Ветка A: Стиль / Style Path',
+                        en: 'How do you usually approach proportions in your outfits?',
+                        ru: 'Как вы обычно работаете с пропорциями и силуэтом в образе?',
+                        options: [
+                            { en: 'Total relaxed fit (loose top + loose bottom)', ru: 'Тотальный расслабленный крой (свободный верх и низ)' },
+                            { en: 'Balanced contrast (oversized top + fitted bottom)', ru: 'Контраст объемов (свободный верх + прямой или узкий низ)' },
+                            { en: 'Clean tailored proportions close to the body', ru: 'Четкие пропорции по фигуре без лишнего объема' }
+                        ]
+                    },
+                    {
+                        id: '7A',
+                        branchLabel: 'Ветка A: Стиль / Style Path',
+                        en: 'What role do accessories and layering play in your daily looks?',
+                        ru: 'Какую роль детали и многослойность играют в ваших образах?',
+                        options: [
+                            { en: 'Minimalist — I let the cut and fabric speak for themselves', ru: 'Минимализм — главный акцент на сам крой и фактуру ткани' },
+                            { en: 'Love layering (shirts over tees, cardigans, jackets)', ru: 'Люблю многослойность (рубашки поверх футболок, жакеты)' },
+                            { en: 'Accents through bags, headwear, and clean footwear', ru: 'Делаю акцент на сумки, головные уборы и обувь' }
+                        ]
+                    }
+                ],
+                B: [
+                    {
+                        id: '2B',
+                        branchLabel: 'Ветка B: Ткани / Fabric & Quality',
+                        en: 'What frustrates you the most about mass-market clothes?',
+                        ru: 'Что вас больше всего расстраивает в одежде из масс-маркета?',
+                        options: [
+                            { en: 'Losing shape and twisting seams after a few washes', ru: 'Потеря формы и перекос швов после пары стирок' },
+                            { en: 'Thin, low-density fabrics that show through', ru: 'Тонкие просвечивающие ткани низкой плотности' },
+                            { en: 'Fabric forming pills (lint balls) quickly', ru: 'Быстрое появление катышков на поверхности' }
+                        ]
+                    },
+                    {
+                        id: '3B',
+                        branchLabel: 'Ветка B: Ткани / Fabric & Quality',
+                        en: 'What is your rule regarding clothing materials?',
+                        ru: 'Какое ваше главное правило при выборе состава ткани?',
+                        options: [
+                            { en: 'Only 100% natural fibers (cotton, linen, wool)', ru: 'Только 100% натуральные волокна (хлопок, лен, шерсть)' },
+                            { en: 'Small elastane stretch (3–5%) for comfort is fine', ru: 'Небольшой процент эластана (3–5%) для посадки допустим' },
+                            { en: 'Looking for dense, heavy-weight fabrics (240+ GSM)', ru: 'Ищу плотные, тяжелые ткани, которые держат силуэт' }
+                        ]
+                    },
+                    {
+                        id: '4B',
+                        branchLabel: 'Ветка B: Ткани / Fabric & Quality',
+                        en: 'How do you prefer your everyday basic items to feel?',
+                        ru: 'Какими по ощущениям вы предпочитаете видеть свои базовые вещи?',
+                        options: [
+                            { en: 'Thick, heavy, and structured', ru: 'Плотными, тяжелыми и держащими форму' },
+                            { en: 'Soft, lightweight, and breathable', ru: 'Мягкими, легкими и дышащими' },
+                            { en: 'Medium density with a silky smooth texture', ru: 'Средней плотности с гладкой шелковистой фактурой' }
+                        ]
+                    },
+                    {
+                        id: '5B',
+                        branchLabel: 'Ветка B: Ткани / Fabric & Quality',
+                        en: 'Do you usually check clothing labels and care instructions before buying?',
+                        ru: 'Изучаете ли вы ярлыки и состав на бирке перед покупкой?',
+                        options: [
+                            { en: 'Always, I look for "Combed Cotton / Пенье"', ru: 'Всегда, ищу длинноволокнистый хлопок (Пенье)' },
+                            { en: 'Sometimes, especially when the price is high', ru: 'Иногда, особенно если вещь стоит дорого' },
+                            { en: 'Rarely, I mostly judge by the look and touch', ru: 'Редко, в основном оцениваю визуально и на ощупь' }
+                        ]
+                    },
+                    {
+                        id: '6B',
+                        branchLabel: 'Ветка B: Ткани / Fabric & Quality',
+                        en: 'Which construction detail do you inspect first to judge garment quality?',
+                        ru: 'На какую деталь пошива вы обращаете внимание в первую очередь?',
+                        options: [
+                            { en: 'Collar rib thickness and shoulder reinforcement tape', ru: 'Плотность горловины и укрепляющую киперную ленту на плечах' },
+                            { en: 'Evenness of inner overlock stitching and loose threads', ru: 'Ровность внутренних оверлочных швов и отсутствие ниток' },
+                            { en: 'Color depth and resistance to fading after washing', ru: 'Глубину окрашивания и стойкость цвета после стирки' }
+                        ]
+                    },
+                    {
+                        id: '7B',
+                        branchLabel: 'Ветка B: Ткани / Fabric & Quality',
+                        en: 'What texture finish do you prefer on cotton jersey and fleece?',
+                        ru: 'Какую обработку поверхности трикотажа и футера вы предпочитаете?',
+                        options: [
+                            { en: 'Clean, smooth, matte finish (Compact Penye)', ru: 'Гладкую, ровную, матовую поверхность (Компакт Пенье)' },
+                            { en: 'Soft brushed fleece inside for extra warmth', ru: 'Мягкий уютный начес внутри для тепла' },
+                            { en: 'Loopback French Terry (diagonal loops inside)', ru: 'Петельный футер (диагональные петли с изнанки без начеса)' }
+                        ]
+                    }
+                ],
+                C: [
+                    {
+                        id: '2C',
+                        branchLabel: 'Ветка C: Комбо / Style + Quality',
+                        en: 'When buying a new basic item, what is your top priority?',
+                        ru: 'При покупке новой базовой вещи что для вас в приоритете?',
+                        options: [
+                            { en: 'Impeccable fabric quality & durability', ru: 'Безупречное качество ткани и долговечность' },
+                            { en: 'Versatile style that matches everything', ru: 'Универсальный крой, который подходит ко всему' },
+                            { en: 'A balance of long-lasting minimalist design', ru: 'Баланс долговечности и минималистичного дизайна' }
+                        ]
+                    },
+                    {
+                        id: '3C',
+                        branchLabel: 'Ветка C: Комбо / Style + Quality',
+                        en: 'What silhouette do you feel most stylish and comfortable in?',
+                        ru: 'В каком силуэте вы чувствуете себя одновременно стильно и комфортно?',
+                        options: [
+                            { en: 'Relaxed structured oversize', ru: 'Расслабленный структурный оверсайз' },
+                            { en: 'Clean tailored straight cuts', ru: 'Четкий прямой крой по фигуре' },
+                            { en: 'Soft layered casual looks', ru: 'Мягкие многослойные образы' }
+                        ]
+                    },
+                    {
+                        id: '4C',
+                        branchLabel: 'Ветка C: Комбо / Style + Quality',
+                        en: 'What colors dominate your ideal capsule wardrobe?',
+                        ru: 'Какие цвета преобладают в вашей идеальной капсуле?',
+                        options: [
+                            { en: 'Deep monochrome (Graphite, Black, Off-white)', ru: 'Глубокий монохром (графит, черный, молочный)' },
+                            { en: 'Natural calm tones (Sand, Taupe, Olive)', ru: 'Спокойные природные оттенки (песочный, тауп, оливка)' },
+                            { en: 'Neutral base with one signature accent color', ru: 'Нейтральная база с одним акцентным цветом' }
+                        ]
+                    },
+                    {
+                        id: '5C',
+                        branchLabel: 'Ветка C: Комбо / Style + Quality',
+                        en: 'Which fabric density works best for your daily lifestyle?',
+                        ru: 'Какая плотность ткани лучше всего подходит под ваш ритм жизни?',
+                        options: [
+                            { en: 'Heavyweight (250+ GSM) for crisp architectural lines', ru: 'Высокая плотность (250+ г/м²) для четких архитектурных линий' },
+                            { en: 'Balanced mid-weight (200–230 GSM) for all-season wear', ru: 'Сбалансированная средняя плотность (200–230 г/м²) на любой сезон' },
+                            { en: 'Lightweight breathable weaves for active movement', ru: 'Легкие дышащие переплетения для активного движения' }
+                        ]
+                    },
+                    {
+                        id: '6C',
+                        branchLabel: 'Ветка C: Комбо / Style + Quality',
+                        en: 'How long do you expect a core wardrobe piece to serve you?',
+                        ru: 'Как долго, по вашим ожиданиям, должна служить качественная базовая вещь?',
+                        options: [
+                            { en: 'At least 2–3 years without losing shape or color', ru: 'Минимум 2–3 года без потери формы и глубины цвета' },
+                            { en: '1–2 seasons of intensive daily wear', ru: '1–2 сезона интенсивной ежедневной носки' },
+                            { en: 'Timeless investment pieces meant to last for years', ru: 'Вневременная база, которая остается актуальной годами' }
+                        ]
+                    },
+                    {
+                        id: '7C',
+                        branchLabel: 'Ветка C: Комбо / Style + Quality',
+                        en: 'What makes a simple basic item look truly premium to your eye?',
+                        ru: 'Что, на ваш взгляд, делает простую базовую вещь по-настоящему премиальной?',
+                        options: [
+                            { en: 'Dense matte fabric that never clings to the body', ru: 'Плотная матовая ткань, которая не обтягивает и держит форму' },
+                            { en: 'Clean neckline finish and subtle tonal stitching', ru: 'Аккуратная обработка горловины и тонкая строчка в тон' },
+                            { en: 'Rich, complex shade of color (washed or deep dye)', ru: 'Сложный благородный оттенок окрашивания' }
+                        ]
+                    }
+                ]
+            }
+        };
+
+        const resultsDatabase = {
+            A: {
+                badge: 'Style & Capsule Strategy',
+                titleEn: 'Your Formula: Architectural Capsule',
+                titleRu: 'Ваша формула: Архитектурный капсульный гардероб',
+                adviceEn: 'To eliminate the "nothing to wear" feeling, apply the 70/20/10 rule: 70% structured basic silhouettes in your chosen neutral palette, 20% textured layering pieces (like an oversized shirt or jacket), and 10% rich accents. Focus on clean lines and shoulder structure — they instantly elevate even a simple T-shirt and jeans.',
+                adviceRu: 'Чтобы забыть о проблеме «нечего надеть», используйте правило 70/20/10: 70% — структурная база в вашей любимой спокойной палитре, 20% — фактурный второй слой (рубашка или жакет свободного кроя) и 10% — глубокие цветовые акценты. Делайте ставку на четкую линию плеча и плотность ткани: именно крой делает образ дорогим.'
+            },
+            B: {
+                badge: 'Textile & Quality Expertise',
+                titleEn: 'Your Formula: Smart Material Selection',
+                titleRu: 'Ваша формула: Осознанный выбор тканей и плотности',
+                adviceEn: 'Always look for "Compact Penye" (combed long-staple cotton) with a density starting from 220–260 GSM for T-shirts and 380+ GSM for hoodies. Long fibers prevent pilling and keep seams straight after dozens of washes. Adding 3–5% lycra/elastane to the collar rib ensures the neckline never stretches out.',
+                adviceRu: 'При выборе трикотажа ищите маркировку «Компакт Пенье» (гребенной длинноволокнистый хлопок) плотностью от 220–260 г/м² для футболок и от 380 г/м² для худи. Длинные волокна защищают ткань от катышков и перекоса швов после стирок, а добавление 3–5% эластана в горловину (кашкорсе) гарантирует, что ворот не растянется.'
+            },
+            C: {
+                badge: 'Complete Style + Textile Synergy',
+                titleEn: 'Your Formula: Elevated Everyday Luxury',
+                titleRu: 'Ваша формула: Премиальная база и безупречный крой',
+                adviceEn: 'You value items where aesthetics meet durability. Build your wardrobe around high-density natural fabrics in calm, versatile tones (Off-white, Graphite, Sand). When a T-shirt or hoodie has substantial fabric weight (250+ GSM) and a relaxed architectural cut, it drapes smoothly without clinging and looks refined for years.',
+                adviceRu: 'Для вас важен баланс эстетики и долговечности. Стройте гардероб вокруг натуральных тканей высокой плотности в спокойных универсальных оттенках (молочный, графит, песочный). Когда базовая вещь сшита из тяжелого хлопка (от 250 г/м²) и имеет свободный архитектурный крой, она идеально драпируется и выглядит как новая даже спустя годы.'
+            }
+        };
+
+        let currentStepIndex = 0;
+        let selectedBranch = null;
+        let userAnswers = [];
+
+        function switchScreen(screenId) {
+            ['screen-cover', 'screen-tips', 'screen-quiz', 'screen-result'].forEach(id => {
+                document.getElementById(id).classList.add('hidden');
+            });
+            document.getElementById(screenId).classList.remove('hidden');
+
+            const navMap = {
+                'screen-cover': 'nav-home',
+                'screen-tips': 'nav-tips',
+                'screen-quiz': 'nav-quiz',
+                'screen-result': 'nav-quiz'
+            };
+            ['nav-home', 'nav-tips', 'nav-quiz'].forEach(navId => {
+                const el = document.getElementById(navId);
+                if (!el) return;
+                if (navId === navMap[screenId]) {
+                    el.className = 'px-3 py-1.5 rounded-lg text-white bg-white/10 font-medium transition cursor-pointer';
+                } else {
+                    el.className = 'px-3 py-1.5 rounded-lg text-neutral-400 hover:text-white transition cursor-pointer';
+                }
+            });
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function goHome() {
+            switchScreen('screen-cover');
+        }
+
+        function openTipsScreen(category = 'all') {
+            switchScreen('screen-tips');
+            filterTips(category);
+        }
+
+        function filterTips(category) {
+            currentTipFilter = category;
+            ['all', 'fabric', 'style', 'labels'].forEach(cat => {
+                const btn = document.getElementById(`tip-filter-${cat}`);
+                if (!btn) return;
+                if (cat === category) {
+                    btn.className = 'px-3.5 py-1.5 rounded-xl text-xs font-medium bg-emerald-500 text-neutral-950 transition cursor-pointer';
+                } else {
+                    btn.className = 'px-3.5 py-1.5 rounded-xl text-xs font-medium bg-white/5 text-neutral-300 hover:text-white transition cursor-pointer';
+                }
+            });
+
+            const grid = document.getElementById('tips-grid');
+            grid.innerHTML = '';
+
+            const filtered = category === 'all' 
+                ? tipsDatabase 
+                : tipsDatabase.filter(t => t.category === category);
+
+            filtered.forEach(tip => {
+                const card = document.createElement('div');
+                card.className = 'p-5 rounded-2xl bg-neutral-950/80 border border-white/10 flex flex-col justify-between';
+                
+                let contentHTML = '';
+                if (langMode === 'en') {
+                    contentHTML = `
+                        <span class="text-[11px] uppercase tracking-wider text-emerald-400 font-semibold block mb-2">${tip.tagEn}</span>
+                        <h3 class="text-base font-medium text-white mb-2">${tip.titleEn}</h3>
+                        <p class="text-xs sm:text-sm text-neutral-400 leading-relaxed">${tip.descEn}</p>
+                    `;
+                } else if (langMode === 'ru') {
+                    contentHTML = `
+                        <span class="text-[11px] uppercase tracking-wider text-emerald-400 font-semibold block mb-2">${tip.tagRu}</span>
+                        <h3 class="text-base font-medium text-white mb-2">${tip.titleRu}</h3>
+                        <p class="text-xs sm:text-sm text-neutral-400 leading-relaxed">${tip.descRu}</p>
+                    `;
+                } else {
+                    contentHTML = `
+                        <span class="text-[11px] uppercase tracking-wider text-emerald-400 font-semibold block mb-2">${tip.tagEn} / ${tip.tagRu}</span>
+                        <h3 class="text-base font-medium text-white mb-0.5">${tip.titleEn}</h3>
+                        <p class="text-xs font-medium text-emerald-300/80 mb-3">${tip.titleRu}</p>
+                        <p class="text-xs text-neutral-300 leading-relaxed mb-2">${tip.descEn}</p>
+                        <p class="text-xs text-neutral-400 leading-relaxed pt-2 border-t border-white/5">${tip.descRu}</p>
+                    `;
+                }
+                card.innerHTML = contentHTML;
+                grid.appendChild(card);
+            });
+        }
+
+        function setLangMode(mode) {
+            langMode = mode;
+            ['both', 'en', 'ru'].forEach(m => {
+                const btn = document.getElementById(`btn-${m}`);
+                if (m === mode) {
+                    btn.className = 'px-3 py-1.5 rounded-lg font-medium transition bg-emerald-500 text-neutral-950 cursor-pointer';
+                } else {
+                    btn.className = 'px-3 py-1.5 rounded-lg font-medium text-neutral-400 hover:text-white transition cursor-pointer';
+                }
+            });
+
+            const coverTitle = document.querySelector('#screen-cover h1');
+            const coverDesc = document.querySelector('#screen-cover p');
+            if (mode === 'en') {
+                coverTitle.textContent = coverTitle.dataset.en;
+                coverDesc.textContent = coverDesc.dataset.en;
+            } else if (mode === 'ru') {
+                coverTitle.textContent = coverTitle.dataset.ru;
+                coverDesc.textContent = coverDesc.dataset.ru;
+            } else {
+                coverTitle.textContent = coverTitle.dataset.en;
+                coverDesc.textContent = coverDesc.dataset.ru;
+            }
+
+            if (!document.getElementById('screen-tips').classList.contains('hidden')) {
+                filterTips(currentTipFilter);
+            }
+
+            if (!document.getElementById('screen-quiz').classList.contains('hidden')) {
+                renderQuestion();
+            }
+        }
+
+        function startQuiz() {
+            switchScreen('screen-quiz');
+            currentStepIndex = 0;
+            selectedBranch = null;
+            userAnswers = [];
+            renderQuestion();
+        }
+
+        function getCurrentQuestionObject() {
+            if (currentStepIndex === 0) {
+                return quizDatabase.root;
+            }
+            return quizDatabase.branches[selectedBranch][currentStepIndex - 1];
+        }
+
+        function renderQuestion() {
+            const qObj = getCurrentQuestionObject();
+            const container = document.getElementById('question-container');
+            
+            container.classList.remove('fade-in');
+            void container.offsetWidth;
+            container.classList.add('fade-in');
+
+            const totalSteps = 7;
+            document.getElementById('step-indicator').textContent = `Шаг ${currentStepIndex + 1} из ${totalSteps} / Step ${currentStepIndex + 1} of ${totalSteps}`;
+            document.getElementById('branch-badge').textContent = qObj.branchLabel;
+            document.getElementById('progress-bar').style.width = `${((currentStepIndex + 1) / totalSteps) * 100}%`;
+
+            const titleEnEl = document.getElementById('q-title-en');
+            const titleRuEl = document.getElementById('q-title-ru');
+
+            if (langMode === 'en') {
+                titleEnEl.textContent = qObj.en;
+                titleEnEl.classList.remove('hidden');
+                titleRuEl.classList.add('hidden');
+            } else if (langMode === 'ru') {
+                titleEnEl.classList.add('hidden');
+                titleRuEl.textContent = qObj.ru;
+                titleRuEl.classList.remove('hidden');
+                titleRuEl.className = 'text-xl sm:text-2xl font-medium text-white leading-snug mb-6';
+            } else {
+                titleEnEl.textContent = qObj.en;
+                titleEnEl.classList.remove('hidden');
+                titleRuEl.textContent = qObj.ru;
+                titleRuEl.classList.remove('hidden');
+                titleRuEl.className = 'text-sm sm:text-base text-neutral-400 mb-6';
+            }
+
+            const optionsList = document.getElementById('options-list');
+            optionsList.innerHTML = '';
+
+            const savedAnswer = userAnswers[currentStepIndex];
+
+            qObj.options.forEach((opt, idx) => {
+                const isSelected = savedAnswer && savedAnswer.optionIndex === idx;
+                const card = document.createElement('div');
+                card.className = `option-card p-4 sm:p-5 rounded-2xl border ${isSelected ? 'selected border-emerald-500' : 'border-white/10 bg-neutral-950/60'} cursor-pointer flex items-start gap-3.5`;
+                
+                card.onclick = () => selectOption(idx);
+
+                let textHTML = '';
+                if (langMode === 'en') {
+                    textHTML = `<span class="text-sm sm:text-base font-medium text-white">${opt.en}</span>`;
+                } else if (langMode === 'ru') {
+                    textHTML = `<span class="text-sm sm:text-base font-medium text-white">${opt.ru}</span>`;
+                } else {
+                    textHTML = `
+                        <span class="block text-sm sm:text-base font-medium text-white mb-0.5">${opt.en}</span>
+                        <span class="block text-xs sm:text-sm text-neutral-400">${opt.ru}</span>
+                    `;
+                }
+
+                card.innerHTML = `
+                    <div class="mt-0.5 w-5 h-5 rounded-full border ${isSelected ? 'border-emerald-400 bg-emerald-500' : 'border-neutral-600'} flex items-center justify-center flex-shrink-0 transition">
+                        ${isSelected ? '<div class="w-2 h-2 rounded-full bg-neutral-950"></div>' : ''}
+                    </div>
+                    <div class="flex-grow">${textHTML}</div>
+                `;
+                optionsList.appendChild(card);
+            });
+
+            document.getElementById('btn-prev').style.visibility = currentStepIndex === 0 ? 'hidden' : 'visible';
+            document.getElementById('btn-next').disabled = !savedAnswer;
+            document.getElementById('next-btn-label').textContent = currentStepIndex === 6 ? 'Get Advice / Получить совет' : 'Next / Далее';
+        }
+
+        function selectOption(optionIndex) {
+            const qObj = getCurrentQuestionObject();
+            const chosenOpt = qObj.options[optionIndex];
+
+            if (currentStepIndex === 0) {
+                if (selectedBranch !== chosenOpt.branch) {
+                    userAnswers = [];
+                }
+                selectedBranch = chosenOpt.branch;
+            }
+
+            userAnswers[currentStepIndex] = {
+                optionIndex: optionIndex,
+                questionEn: qObj.en,
+                questionRu: qObj.ru,
+                answerEn: chosenOpt.en,
+                answerRu: chosenOpt.ru
+            };
+
+            renderQuestion();
+        }
+
+        function nextStep() {
+            if (!userAnswers[currentStepIndex]) return;
+
+            if (currentStepIndex < 6) {
+                currentStepIndex++;
+                renderQuestion();
+            } else {
+                showResults();
+            }
+        }
+
+        function prevStep() {
+            if (currentStepIndex > 0) {
+                currentStepIndex--;
+                renderQuestion();
+            }
+        }
+
+        function showResults() {
+            switchScreen('screen-result');
+
+            const res = resultsDatabase[selectedBranch];
+            document.getElementById('result-badge').textContent = res.badge;
+            document.getElementById('result-title-en').textContent = res.titleEn;
+            document.getElementById('result-title-ru').textContent = res.titleRu;
+            document.getElementById('result-advice-en').textContent = res.adviceEn;
+            document.getElementById('result-advice-ru').textContent = res.adviceRu;
+
+            const tagsContainer = document.getElementById('result-summary-tags');
+            tagsContainer.innerHTML = '';
+
+            userAnswers.forEach((item, index) => {
+                const tag = document.createElement('div');
+                tag.className = 'p-3.5 rounded-xl bg-neutral-950/80 border border-white/5';
+                tag.innerHTML = `
+                    <span class="text-[11px] text-emerald-400 font-medium block mb-1">Step ${index + 1}</span>
+                    <p class="text-xs font-medium text-white">${item.answerEn}</p>
+                    <p class="text-[11px] text-neutral-400 mt-0.5">${item.answerRu}</p>
+                `;
+                tagsContainer.appendChild(tag);
+            });
+        }
+
+        function restartQuiz() {
+            startQuiz();
+        }
+    </script>
+</body>
+</html>
+```
